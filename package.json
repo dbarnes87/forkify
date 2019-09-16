@@ -19,7 +19,5 @@
   "devDependencies": {
     "webpack": "^4.40.2"
   },
-  "dependencies": {
-    "jquery": "^3.4.1"
-  }
+  "dependencies": {}
 }
