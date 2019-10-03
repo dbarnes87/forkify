@@ -26,7 +26,7 @@ const controlSearch = async () => {
     const query = searchView.getInput();
     console.log(query);
 
-    if(query) {
+    if (query) {
         // 2) New search object and add to state
         state.search = new Search(query);
 
@@ -146,11 +146,8 @@ elements.shopping.addEventListener('click', e => {
 /*
 LIKE Controller
 */
-// Testing
-state.likes = new Likes();
-likesView.toggleLikeMenu(state.likes.getNumLikes());
 
-const controlLike= () => {
+const controlLike = () => {
     if (!state.likes) state.likes = new Likes();
     const currentID = state.recipe.id;
 
@@ -166,12 +163,12 @@ const controlLike= () => {
         // Toggle the like button
         likesView.toggleLikedBtn(true);
         // Add like to UI list
-        likesView.renderLike(newLike);    
-    // User has liked current recipe
+        likesView.renderLike(newLike);
+        // User has liked current recipe
     } else {
         // Remove like to the state
         state.likes.deleteLike(currentID);
-    
+
         // Toggle the like button
         likesView.toggleLikedBtn(false);
 
@@ -182,9 +179,19 @@ const controlLike= () => {
 };
 
 
+// Restore liked recipes on page load
+window.addEventListener('load', () => {
+    state.likes = new Likes();
 
+    // Restore likes
+    state.likes.readStorage();
 
+    // Toggle like menu button
+    likesView.toggleLikeMenu(state.likes.getNumLikes());
 
+    // Render all liked recipes
+    state.likes.likes.forEach(like => likesView.renderLike(like));
+});
 
 
 
@@ -192,11 +199,11 @@ const controlLike= () => {
 elements.recipe.addEventListener('click', e => {
     if (e.target.matches('.btn-decrease, .btn-decrease *')) {
         // Decrease button is clicked
-        if (state.recipe.servings > 1){
+        if (state.recipe.servings > 1) {
             state.recipe.updateServings('dec');
             recipeView.updateServingsIngredients(state.recipe);
         }
-    } else  if (e.target.matches('.btn-increase, .btn-increase *')) {
+    } else if (e.target.matches('.btn-increase, .btn-increase *')) {
         // Increase button is clicked
         state.recipe.updateServings('inc');
         recipeView.updateServingsIngredients(state.recipe);
